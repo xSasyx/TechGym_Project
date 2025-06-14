@@ -2,8 +2,8 @@
 University of Naples Parthenope - Academic Year 2024/2025  
 
 ## 👥 Team Members  
-- Salvatore Parmendola (ID: 0124002933)  
-- Flavio Nazzarro (ID: 0124002946)  
+- Salvatore Parmendola (Mat: 0124002933)  
+- Flavio Nazzarro (Mat: 0124002946)  
 
 # TechGym - Web Application for Gym Management  
 
