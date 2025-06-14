@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Turni Staff - Palestra Tracker{% endblock %}
+
+{% block content %}
+<div class="shifts-container">
+    <h1>Turni dello Staff</h1>
+    
+    {% if turni %}
+        {% set turni_per_mese = {} %}
+        {% for turno in turni %}
+            {% set anno = turno.data.year %}
+            {% set mese = turno.data.month %}
+            {% if anno not in turni_per_mese %}
+                {% set _ = turni_per_mese.update({anno: {}}) %}
+            {% endif %}
+            {% if mese not in turni_per_mese[anno] %}
+                {% set _ = turni_per_mese[anno].update({mese: []}) %}
+            {% endif %}
+            {% set _ = turni_per_mese[anno][mese].append(turno) %}
+        {% endfor %}
+
+        {% for anno in turni_per_mese|sort(reverse=True) %}
+            {% for mese in turni_per_mese[anno]|sort(reverse=True) %}
+                <div class="month-shifts">
+                    <h2>{{ mese|month_name }} {{ anno }}</h2>
+                    
+                    <div class="shifts-table">
+                        <div class="table-header">
+                            <span>Data</span>
+                            <span>Staff</span>
+                            <span>Orario</span>
+                            <span>Durata</span>
+                        </div>
+                        
+                        {% for turno in turni_per_mese[anno][mese]|sort(attribute='data') %}
+                            <div class="shift-row">
+                                <span>{{ turno.data.strftime('%d/%m/%Y') }}</span>
+                                <span>{{ turno.nome_staff }} {{ turno.cognome_staff }}</span>
+                                <span>{{ turno.ora_inizio }} - {{ turno.ora_fine }}</span>
+                                <span>
+                                    {% set inizio = turno.ora_inizio.split(':') %}
+                                    {% set fine = turno.ora_fine.split(':') %}
+                                    {% set ore = fine[0]|int - inizio[0]|int %}
+                                    {% set minuti = fine[1]|int - inizio[1]|int %}
+                                    {% if minuti < 0 %}
+                                        {% set ore = ore - 1 %}
+                                        {% set minuti = minuti + 60 %}
+                                    {% endif %}
+                                    {{ ore }}h {{ minuti }}m
+                                </span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% else %}
+        <div class="no-shifts">
+            <p>Nessun turno programmato.</p>
+        </div>
+    {% endif %}
+
+    <div class="back-link">
+        <a href="{{ url_for('home') }}">Torna alla home staff</a>
+    </div>
+</div>
+{% endblock %}

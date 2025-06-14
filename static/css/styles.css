@@ -1,0 +1,2031 @@
+/* ==========================================================================
+   1. IMPOSTAZIONI GLOBALI E VARIABILI DI COLORE 
+   ========================================================================== */
+
+/*
+ * :root contiene le variabili globali (custom properties) usate in tutto il sito.
+ * Questo permette di cambiare facilmente il tema del sito (es. colori, spaziature)
+ * modificando solo questa sezione.
+ */
+ :root {
+    /* Tema Chiaro (Default) */
+    --primary-color: #3498db;      /* Colore primario (bottoni, link attivi) */
+    --secondary-color: #2980b9;    /* Variante più scura del primario (hover) */
+    --accent-color: #e74c3c;       /* Colore per enfasi (es. bottoni 'elimina') */
+    --success-color: #27ae60;      /* Colore per azioni positive (es. 'aggiungi') */
+    --warning-color: #f39c12;      /* Colore per avvertimenti */
+    --dark-color: #ecf0f1;         /* Colore scuro (header, footer, titoli tabella) */
+    --light-color: #727575;        /* Colore chiaro (sfondi secondari) */
+    --text-color: #f7f4f4;            /* Colore principale del testo */
+    --text-light: #ffffff;         /* Colore testo secondario, più chiaro */
+    --bg-color: #1b263b;           /* Colore di sfondo generale del body */
+    --surface-color: #2c3e50;      /* Colore delle "superfici" (card, form) */
+    --border-color: #415a77;          /* Colore dei bordi */
+    --white: #fff;                 /* Bianco puro */
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Ombra per i componenti */
+    --border-radius: 8px;          /* Bordi arrotondati per i componenti */
+}
+
+/*
+ * Sezione per la DARK MODE.
+ * @media (prefers-color-scheme: dark) si attiva automaticamente se l'utente
+ * ha impostato il tema scuro sul proprio sistema operativo.
+ * Qui ridefiniamo le variabili globali per adattarle al tema scuro.
+ */
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* Tema Scuro */
+        --primary-color: #3498db;
+        --secondary-color: #2980b9;
+        --accent-color: #e74c3c;
+        --success-color: #27ae60;
+        --warning-color: #f39c12;
+        --dark-color: #ecf0f1;           /* Invertito: ora è un colore chiaro */
+        --light-color: #414242;          /* Uno sfondo più chiaro dello sfondo principale */
+        --text-color: #ecf0f1;           /* Testo chiaro */
+        --text-light: #bdc3c7;         /* Testo secondario chiaro */
+        --bg-color: #1b263b;           /* Sfondo principale scuro */
+        --surface-color: #2c3e50;       /* Sfondo delle card/form scuro */
+        --border-color: #415a77;         /* Bordi più chiari per contrasto */
+        --white: #fff;
+        --shadow: 0 4px 15px rgba(0, 0, 0, 0.4); /* Ombra più evidente su sfondo scuro */
+    }
+
+    /* Adattamenti specifici per la dark mode */
+    tr:nth-child(even) {
+        background-color: #2c3e50; /* Sfondo righe pari tabelle */
+    }
+
+    tr:hover {
+        background-color: #3a506b; /* Hover righe tabelle */
+    }
+
+    th {
+        background-color: #3a506b; /* Header tabelle */
+        color: var(--text-color);
+    }
+    
+    .logout-btn {
+        border-color: var(--text-color);
+    }
+
+    .logout-btn:hover {
+        background-color: var(--primary-color);
+        color: var(--white);
+        border-color: var(--primary-color);
+    }
+}
+
+
+
+/* ==========================================================================
+   2. RESET E STILI DI BASE
+   ========================================================================== */
+/*
+ * Reset di base per annullare gli stili di default del browser
+ * e garantire coerenza tra diversi browser.
+ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Stili generali applicati al <body> */
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.3s, color 0.3s; /* Transizione fluida tra temi */
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+
+/* ==========================================================================
+   3. HEADER / BARRA DI NAVIGAZIONE
+   ========================================================================== */
+/*
+ * Stili per l'header del sito, la barra in alto che contiene
+ * il logo, la navigazione principale.
+ */
+.site-header {
+    background-color: var(--surface-color);
+    color: var(--text-color);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--dark-color);
+}
+
+/* Pulsante per il menu su dispositivi mobili (hamburger) */
+.mobile-menu-btn {
+    display: none; /* Visibile solo su mobile */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.mobile-menu-btn span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--text-color);
+    margin: 4px 0;
+    transition: all 0.3s ease;
+}
+
+/* Animazione dell'hamburger che diventa una 'X' */
+.mobile-menu-btn.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+.mobile-menu-btn.active span:nth-child(2) {
+    opacity: 0;
+}
+.mobile-menu-btn.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Navigazione principale */
+.main-nav {
+    display: flex;
+    align-items: center;
+}
+.nav-list, .auth-nav {
+    display: flex;
+    align-items: center;
+}
+.nav-item {
+    margin-left: 1.5rem;
+    position: relative;
+}
+.nav-link:hover {
+    color: var(--primary-color);
+}
+
+/* Menu a tendina (dropdown) */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--surface-color);
+    min-width: 200px;
+    box-shadow: var(--shadow);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+    z-index: 10;
+    border: 1px solid var(--border-color);
+}
+.dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+}
+.dropdown-item {
+    color: var(--text-color);
+}
+.dropdown-item:hover {
+    background-color: var(--light-color);
+    color: var(--primary-color);
+}
+
+/* Sezione utente (messaggio benvenuto, logout) */
+.welcome-msg {
+    margin-right: 1rem;
+    color: var(--text-light);
+}
+.logout-btn {
+    background-color: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    transition: all 0.3s;
+}
+.logout-btn:hover {
+    background-color: var(--accent-color);
+    color: var(--white);
+}
+
+/* ==========================================================================
+   4. CONTENUTO PRINCIPALE E LAYOUT
+   ========================================================================== */
+.main-content {
+    flex: 1; 
+    max-width: 1200px;
+    width: 100%;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* ==========================================================================
+   5. COMPONENTI RIUTILIZZABILI
+   ========================================================================== */
+
+/* --- Messaggi Flash (Notifiche) --- */
+/*
+ * Stili per i banner di notifica che appaiono in cima alla pagina
+ * per comunicare successo, errore o informazioni.
+ */
+.flash-messages {
+    margin-bottom: 1.5rem;
+}
+.flash-success, .flash-error, .flash-info {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: var(--border-radius);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid;
+}
+.flash-success {
+    background-color: var(--success-color);
+    color: var(--white);
+    border-color: var(--success-color);
+}
+.flash-error {
+    background-color: var(--accent-color);
+    color: var(--white);
+    border-color: var(--accent-color);
+}
+.flash-info {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-color: var(--primary-color);
+}
+.close-flash {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: inherit;
+}
+
+/* --- Form (Moduli di input) --- */
+/*
+ * Stili generici per tutti i form del sito (login, contatti, creazione dati).
+ */
+.form-group {
+    margin-bottom: 1rem;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border-radius: var(--border-radius);
+    font-family: inherit;
+}
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+.form-row {
+    display: flex;
+    gap: 1rem;
+}
+.form-row .form-group {
+    flex: 1;
+}
+
+/* --- Bottoni --- */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s, transform 0.2s;
+}
+.btn:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px); /* Effetto al passaggio del mouse */
+}
+.btn-secondary {
+    background-color: var(--text-light);
+}
+.btn-secondary:hover {
+    background-color: #6c757d;
+}
+.btn-danger {
+    background-color: var(--accent-color);
+}
+.btn-danger:hover {
+    background-color: #c0392b;
+}
+.update-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.update-btn {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.update-btn:hover {
+    background-color: #1e8449;
+    transform: translateY(-2px);
+}
+/* --- Card (Contenitori) --- */
+/*
+ * La 'card' è un contenitore generico con ombra e bordi arrotondati,
+ * usato per raggruppare contenuti correlati (es. un post, un profilo).
+ */
+.card {
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border-color);
+}
+.card-header {
+    background-color: var(--light-color);
+    color: var(--text-color);
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+.card-body {
+    padding: 1.5rem;
+}
+
+/* --- Tabelle --- */
+/* Stili per le tabelle di dati. */
+.table-responsive {
+    overflow-x: auto;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+th, td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+th {
+    background-color: #3a506b;
+    color: var(--white);
+}
+tr:nth-child(even) {
+    background-color: var(--light-color);
+}
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+
+/* ==========================================================================
+   6. FOOTER
+   ========================================================================== */
+/* Stili per il piè di pagina del sito. */
+.site-footer {
+    background-color: var(--surface-color);
+    color: var(--text-light);
+    padding: 1.5rem 0;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+}
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+.footer-link {
+    color: var(--primary-color);
+    transition: color 0.3s;
+}
+.footer-link:hover {
+    color: var(--secondary-color);
+}
+
+/* ==========================================================================
+   7. STILI SPECIFICI PER LE PAGINE
+   ========================================================================== */
+
+/* --- Pagina Login / Registrazione --- */
+.auth-container {
+    flex: 1; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+}
+.auth-card {
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid var(--border-color);
+}
+.auth-card h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.auth-link {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+.auth-link a {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* --- Pagina Profilo Utente --- */
+.profile-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* --- Pagina Schede Allenamento --- */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f7fa;
+    padding: 0;
+    margin: 0;
+}
+
+.workout-plans-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    color: var(--text-color);
+    margin-bottom: 30px;
+    font-size: 2rem;
+    text-align: center;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #eaeaea;
+}
+
+/* Card della Scheda Allenamento */
+.workout-plan {
+    background: #162b41;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.workout-plan:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.plan-header {
+    background: linear-gradient(135deg, #3498db, #2c3e50);
+    color: white;
+    padding: 20px;
+    position: relative;
+}
+
+.plan-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.plan-summary-header {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    font-size: 0.9rem;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.plan-summary-header span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.plan-summary-header i {
+    font-size: 1.1rem;
+}
+
+/* Contenuto della Scheda */
+.plan-content {
+    padding: 20px;
+}
+
+h3 {
+    color: white;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Lista Esercizi */
+.exercise-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.exercise-item {
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #162b41;
+    border-left: 4px solid #3498db;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.exercise-item:hover {
+    background-color: #0e243b;
+}
+
+.exercise-item strong {
+    color: #2c3e50;
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.exercise-detail {
+    margin: 5px 0;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.exercise-meta {
+    margin: 8px 0 0;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+.exercise-notes {
+    margin: 8px 0 0;
+    padding: 8px;
+    background-color: #fff8e1;
+    border-left: 3px solid #ffc107;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* Sezione Note Generali */
+.plan-summary-footer {
+    margin-top: 25px;
+    padding: 15px;
+    background-color: #e3f2fd;
+    border-radius: 5px;
+    border-left: 4px solid #2196f3;
+}
+
+.plan-summary-footer p {
+    margin: 0;
+    color: #0d47a1;
+}
+
+/* Footer della Scheda */
+.plan-footer {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    text-align: right;
+}
+
+/* Messaggi per nessuna scheda */
+.no-plans {
+    text-align: center;
+    padding: 40px 20px;
+    background: #3a506b;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.no-plans p {
+    font-size: 1.1rem;
+    color: #7f8c8d;
+}
+
+/* Stile per schede legacy */
+.legacy-plan {
+    padding: 15px;
+    background-color: #2c3e50;
+    border-radius: 5px;
+    white-space: pre-line;
+}
+
+.no-content {
+    color: #95a5a6;
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .plan-summary-header {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .exercise-item {
+        padding: 12px;
+    }
+    
+    h1 {
+        font-size: 1.6rem;
+    }
+}
+
+/* Icone */
+.fas {
+    margin-right: 5px;
+}
+
+/* --- Pagina Gestione Clienti, Turni, etc. --- */
+/*
+ * Questi sono stili che usano display: grid per creare layout a colonne
+ * per liste complesse come la lista clienti o i turni dello staff.
+ */
+.clients-list, .month-shifts {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+}
+.list-header, .table-header {
+    display: grid;
+    padding: 1rem;
+    background-color: var(--light-colo);
+    font-weight: bold;
+    border-bottom: 1px solid var(--border-color);
+}
+.client-item, .shift-row {
+    display: grid;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    align-items: center;
+}
+.list-header {
+    grid-template-columns: 1fr 1fr 2fr 1fr;
+}
+.client-item {
+    grid-template-columns: 1fr 1fr 2fr 1fr;
+}
+.table-header, .shift-row {
+    grid-template-columns: 1fr 2fr 1fr 1fr;
+}
+
+/* --- Pagina Crea Scheda Allenamento --- */
+.workout-form-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+.exercise-block {
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: var(--border-radius);
+    background-color: var(--bg-color);
+}
+.add-btn {
+    background-color: var(--success-color);
+    margin-top: 0.5rem;
+}
+.remove-btn {
+    background-color: var(--accent-color);
+    padding: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+
+/* ==========================================================================
+   8. RESPONSIVE DESIGN
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    /* Mostra il bottone hamburger e nasconde la nav classica */
+    .mobile-menu-btn {
+        display: block;
+    }
+    .main-nav {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        margin-top: 1rem;
+        background-color: var(--surface-color);
+    }
+    .main-nav.active {
+        display: flex;
+    }
+    .nav-list, .auth-nav {
+        flex-direction: column;
+        width: 100%;
+    }
+    .nav-item {
+        margin: 0;
+        width: 100%;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .nav-link {
+        padding: 1rem;
+        display: block;
+    }
+    .dropdown-menu {
+        position: static;
+        box-shadow: none;
+        opacity: 1;
+        visibility: visible;
+        display: none; 
+        width: 100%;
+        border: none;
+        background-color: var(--light-color);
+    }
+    .dropdown-menu.show {
+        display: block; /* Mostra il sottomenu */
+    }
+    /* Indenta gli item del dropdown per chiarezza */
+    .dropdown-item {
+        padding: 0.5rem 2rem;
+    }
+    
+    
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    /* Adatta le liste a griglia per mobile */
+    .list-header, .table-header {
+        display: none; /* Nascondi gli header testuali su mobile */
+    }
+    .client-item, .shift-row {
+        grid-template-columns: 1fr; /* Una colonna per tutto */
+        gap: 0.5rem;
+        padding: 1rem;
+        border: 1px solid var(--border-color);
+        margin-bottom: 1rem;
+        border-radius: var(--border-radius);
+    }
+    /* Aggiungi etichette "data-" in HTML per dare contesto su mobile */
+    .client-item > div::before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+
+}
+/* ==========================================================================
+   9. STILI PER LA PAGINA RISULTATI 
+   ========================================================================== */
+
+/* ==========================================================================
+   STILI PER LA PAGINA RISULTATI - TEMA SCURO
+   ========================================================================== */
+
+.results-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    color: var(--text-color);
+}
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.results-header h1 {
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.new-workout-btn {
+    background-color: var(--success-color);
+    color: var(--white);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    font-weight: bold;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.new-workout-btn:hover {
+    background-color: #1e8449;
+    transform: translateY(-2px);
+}
+
+.workout-history h2 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.workout-summary {
+    background-color: var(--surface-color);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-color);
+}
+
+.workout-summary p {
+    margin: 0.5rem 0;
+    color: var(--text-light);
+}
+
+.workout-summary strong {
+    color: var(--text-color);
+}
+
+.workout-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.workout-card {
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.workout-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.workout-header {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.workout-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.workout-date {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.exercise-list {
+    padding: 1.5rem;
+    margin: 0;
+    list-style: none;
+}
+
+.exercise-item {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--border-color);
+}
+
+.exercise-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.exercise-item strong {
+    color: var(--primary-color);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.set-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0.5rem 0 1rem;
+    color: var(--text-light);
+}
+
+.set-list li {
+    padding: 0.25rem 0;
+    font-size: 0.9rem;
+}
+
+.exercise-meta {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-top: 0.5rem;
+}
+
+.workout-meta {
+    padding: 0 1.5rem 1.5rem;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.workout-meta p {
+    margin: 0.5rem 0;
+}
+
+.workout-notes {
+    font-style: italic;
+    margin-top: 1rem !important;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--border-color);
+}
+
+.no-workouts {
+    background-color: var(--surface-color);
+    padding: 2rem;
+    text-align: center;
+    border-radius: var(--border-radius);
+    border: 1px dashed var(--border-color);
+    color: var(--text-light);
+}
+
+.no-workouts a {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* Stili per la dark mode specifici */
+@media (prefers-color-scheme: dark) {
+    .workout-card {
+        border-color: var(--border-color);
+    }
+    
+    .workout-header {
+        background-color: var(--primary-color);
+    }
+    
+    .exercise-item strong {
+        color: var(--text-color);
+    }
+    
+    .set-list li {
+        color: var(--text-light);
+    }
+    
+    .no-workouts {
+        background-color: var(--surface-color);
+    }
+}
+
+/* Responsive design per la pagina risultati */
+@media (max-width: 768px) {
+    .results-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .workout-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .workout-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
+/* ==========================================================================
+   10. STILI PER LA PAGINA INSERISCI ALLENAMENTO 
+   ========================================================================== */
+
+   .workout-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+}
+
+.workout-container h2 {
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+/* Sezioni del form */
+.form-section,
+.exercises-section,
+.session-details {
+    margin-bottom: 2.5rem;
+    padding: 1.5rem;
+    background-color: var(--bg-color);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.exercises-section h3,
+.session-details h3 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+}
+
+/* Blocco esercizio */
+.exercise-block {
+    background-color: var(--surface-color);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    position: relative;
+}
+
+.exercise-block h4 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.exercise-number {
+    color: var(--primary-color);
+}
+
+/* Sezioni forza/cardio */
+.strength-section,
+.cardio-section {
+    margin-bottom: 1.5rem;
+}
+
+.strength-section h5,
+.cardio-section h5 {
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    font-weight: bold;
+}
+
+/* Righe delle serie */
+.sets-container {
+    margin-bottom: 1rem;
+}
+
+.set-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+    padding: 0.8rem;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: calc(var(--border-radius) / 2);
+}
+
+.set-row span {
+    min-width: 2rem;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.set-row input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: calc(var(--border-radius) / 2);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* Pulsanti */
+.add-set-btn,
+.remove-set-btn,
+.remove-exercise-btn,
+#addExerciseBtn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.add-set-btn,
+#addExerciseBtn {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.add-set-btn:hover,
+#addExerciseBtn:hover {
+    background-color: #1e8449;
+    transform: translateY(-2px);
+}
+
+.remove-set-btn,
+.remove-exercise-btn {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.remove-set-btn:hover,
+.remove-exercise-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Azioni del form */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.primary-btn {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.primary-btn:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.secondary-btn {
+    background-color: transparent;
+    color: var(--text-color);
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.secondary-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Stili per la dark mode */
+@media (prefers-color-scheme: dark) {
+    .form-section,
+    .exercises-section,
+    .session-details {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    .exercise-block {
+        background-color: var(--surface-color);
+    }
+    
+    .set-row {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    .set-row input {
+        background-color: var(--surface-color);
+    }
+    
+    .secondary-btn:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+}
+
+na Crea Scheda Allenamento --- */
+.container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.container h1 {
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+}
+
+form {
+    background-color: var(--surface-color);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+}
+
+.form-section {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.form-section:last-child {
+    border-bottom: none;
+}
+
+.form-section h2 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+select, input[type="text"], input[type="number"],input[type="email"], textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+    font-family: inherit;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.row > div {
+    flex: 1;
+}
+
+.esercizio {
+    background-color: var(--bg-color);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border-color);
+    position: relative;
+}
+
+.esercizio h3 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.primary {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.primary:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.secondary {
+    background-color: transparent;
+    color: var(--text-color);
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.secondary:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+#aggiungiEsercizio {
+    background-color: var(--success-color);
+    color: var(--white);
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#aggiungiEsercizio:hover {
+    background-color: #1e8449;
+    transform: translateY(-2px);
+}
+
+.rimuovi {
+    background-color: var(--accent-color);
+    color: var(--white);
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 1rem;
+}
+
+.rimuovi:hover {
+    background-color: #c0392b;
+}
+
+/* Stili per la dark mode specifici per le nuove pagine */
+@media (prefers-color-scheme: dark) {
+    .esercizio {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    .secondary:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    .exercise-item strong {
+        color: var(--text-color);
+    }
+}
+
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .workout-container {
+        padding: 1rem;
+    }
+    
+    .form-section,
+    .exercises-section,
+    .session-details {
+        padding: 1rem;
+    }
+    
+    .set-row {
+        flex-wrap: wrap;
+    }
+    
+    .set-row input {
+        min-width: 100%;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .primary-btn,
+    .secondary-btn {
+        width: 100%;
+    }
+}
+
+form {
+    background-color: var(--surface-color);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+}
+
+.form-section {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.form-section:last-child {
+    border-bottom: none;
+}
+
+.form-section h2 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+select, input[type="text"],input[type="text"], input[type="number"], textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+    font-family: inherit;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.row > div {
+    flex: 1;
+}
+
+.esercizio {
+    background-color: var(--bg-color);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border-color);
+    position: relative;
+}
+
+.esercizio h3 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.primary {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.primary:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.secondary {
+    background-color: transparent;
+    color: var(--text-color);
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.secondary:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+#aggiungiEsercizio {
+    background-color: var(--success-color);
+    color: var(--white);
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#aggiungiEsercizio:hover {
+    background-color: #1e8449;
+    transform: translateY(-2px);
+}
+
+.rimuovi {
+    background-color: var(--accent-color);
+    color: var(--white);
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 1rem;
+}
+
+.rimuovi:hover {
+    background-color: #c0392b;
+}
+
+/* Stili per la dark mode specifici per le nuove pagine */
+@media (prefers-color-scheme: dark) {
+    .esercizio {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    .secondary:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    .exercise-item strong {
+        color: var(--text-color);
+    }
+}
+
+/* ==========================================================================
+   8. RESPONSIVE DESIGN
+   ========================================================================== */
+@media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: block;
+    }
+    .main-nav {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        margin-top: 1rem;
+        background-color: var(--surface-color);
+    }
+    .main-nav.active {
+        display: flex;
+    }
+    .nav-list, .auth-nav {
+        flex-direction: column;
+        width: 100%;
+    }
+    .nav-item {
+        margin: 0;
+        width: 100%;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .nav-link {
+        padding: 1rem;
+        display: block;
+    }
+    .dropdown-menu {
+        position: static;
+        box-shadow: none;
+        opacity: 1;
+        visibility: visible;
+        display: none;
+        width: 100%;
+        border: none;
+        background-color: var(--light-color);
+    }
+    .dropdown-menu.show {
+        display: block;
+    }
+    .dropdown-item {
+        padding: 0.5rem 2rem;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .list-header, .table-header {
+        display: none;
+    }
+    .client-item, .shift-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        padding: 1rem;
+        border: 1px solid var(--border-color);
+        margin-bottom: 1rem;
+        border-radius: var(--border-radius);
+    }
+    
+    
+    .plan-summary-header {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .actions {
+        flex-direction: column;
+    }
+    
+    .primary, .secondary, #aggiungiEsercizio {
+        width: 100%;
+    }
+}
+
+/* Reset e Stili Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    line-height: 1.6;
+    color: #ffffff; 
+    background-color: #1b263b; 
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+
+.section {
+    margin-bottom: 30px;
+    padding: 15px;
+    background: #2c3e50 ; 
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.section h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #ffffff; 
+    font-size: 28px;
+}
+
+/* Hero Section */
+.hero-section {
+    text-align: center;
+    margin-bottom: 50px;
+    padding: 40px 0;
+}
+
+.hero-section h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.gym-name {
+    color: #4fc3f7; 
+    font-weight: bold;
+}
+
+.subtitle {
+    font-size: 18px;
+    color: #b0bec5; 
+    margin-bottom: 20px;
+}
+
+.hero-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-top: 20px;
+    border: 2px solid #333;
+}
+
+/* Tabella Orari */
+.orari-table {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: #1e1e1e;
+}
+
+.orari-table td {
+    padding: 12px;
+    border-bottom: 1px solid #333; 
+    color: #ffffff;
+}
+
+.orari-table tr:last-child td {
+    border-bottom: none;
+}
+
+.orari-table tr.highlight {
+    background-color: #2a2a2a; 
+    font-weight: bold;
+}
+
+.note {
+    text-align: center;
+    font-size: 14px;
+    color: #b0bec5; 
+    margin-top: 10px;
+}
+
+/* Griglia Eventi */
+.eventi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.evento-card {
+    border: 1px solid #333;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    background-color: #1e1e1e;
+}
+
+.evento-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.evento-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.evento-content {
+    padding: 20px;
+}
+
+.evento-content h3 {
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+/* Servizi */
+.servizi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.servizio-card {
+    text-align: center;
+    padding: 25px 15px;
+    border-radius: 8px;
+    background: #252525; 
+    transition: all 0.3s ease;
+    border: 1px solid #333;
+}
+
+.servizio-card:hover {
+    background: #2e2e2e;
+    transform: translateY(-3px);
+}
+
+.servizio-card h3 {
+    margin: 15px 0 10px;
+    color: #ffffff;
+}
+
+/* Corsi */
+.corsi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.corsi-column {
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+}
+
+.corsi-header {
+    background: #0d47a1; 
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+.corsi-header.personal {
+    background: #1b5e20; 
+}
+
+.corsi-list {
+    list-style: none;
+    background: #1e1e1e;
+    padding: 20px;
+}
+
+.corsi-list li {
+    padding: 12px 0;
+    border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    color: #ffffff;
+}
+
+.corsi-list li:last-child {
+    border-bottom: none;
+}
+
+.orario {
+    background: #0d47a1;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Promozioni */
+.promozioni {
+    background: #1e1e1e;
+    border: 1px solid #333;
+}
+
+.promo-banner {
+    text-align: center;
+    padding: 30px;
+    background: #252525;
+    border-radius: 8px;
+    border: 2px dashed #4fc3f7; 
+}
+
+.promo-banner h3 {
+    color: #4fc3f7;
+    margin-bottom: 15px;
+}
+
+.divider {
+    height: 1px;
+    background: #333;
+    margin: 15px auto;
+    width: 50%;
+}
+
+/* Contatti */
+.contatti-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.map-container {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #333;
+}
+
+.gym-map {
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    border: none;
+}
+
+.contatti-card {
+    background: #1e1e1e;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #333;
+}
+
+.contatti-card h3 {
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.contatti-card p {
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+/* Icone */
+.icon {
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.icon-small {
+    width: 16px;
+    height: 16px;
+    filter: invert(1); 
+}
+
+.icon-big {
+    font-size: 40px;
+    color: #4fc3f7; 
+}
+
+.icon-social {
+    font-size: 24px;
+    color: #4fc3f7; 
+}
+
+
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 28px;
+    }
+    
+    .servizi-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .servizi-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .section {
+        padding: 15px;
+    }
+}

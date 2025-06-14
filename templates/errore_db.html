@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Errore Database{% endblock %}
+
+{% block content %}
+<!-- Contenitore principale dell'errore -->
+<div class="error-container">
+    <!-- Messaggio di errore -->
+    <div class="error-message">
+        <!-- Titolo dell'errore -->
+        <h2>Errore di Connessione al Database</h2>
+        
+        <!-- Descrizione del problema -->
+        <p>Ops! C'è un problema con il database al momento.</p>
+        <p>Probabilmente è in corso manutenzione o c'è un guasto temporaneo.</p>
+        
+        <!-- Linea divisoria -->
+        <div class="divider"></div>
+        
+        <!-- Ulteriori informazioni -->
+        <p>Alcune funzioni del sito potrebbero non funzionare correttamente.</p>
+        <p>Per favore, riprova più tardi.</p>
+        
+        <!-- Mostra il messaggio di errore tecnico se disponibile -->
+        {% if error_message %}
+        <div class="tech-details">
+            <p>Dettaglio tecnico:</p>
+            <code>{{ error_message }}</code>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Pulsante per tornare alla home -->
+    <a href="{{ url_for('index_page') }}" class="home-button">Torna alla Home</a>
+</div>
+{% endblock %}

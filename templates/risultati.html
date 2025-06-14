@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title if title else "I Tuoi Risultati" }}{% endblock %}
+
+{% block content %}
+<div class="results-container">
+    <div class="results-header">
+        <h1>{{ title if title else "I Tuoi Risultati" }}</h1>
+        <a href="{{ url_for('inserisci_allenamento') }}" class="new-workout-btn">Registra Nuovo Allenamento</a>
+    </div>
+
+    <!-- Sezione Cronologia Allenamenti -->
+    <section class="workout-history">
+        <h2>Cronologia Allenamenti Recenti</h2>
+
+        {% if allenamenti_utente %}
+            <div class="workout-summary">
+                <p><strong>Totale sessioni registrate:</strong> {{ allenamenti_utente|length }}</p>
+                <p><strong>Media calorie/sessione:</strong> ~{{ (allenamenti_utente|map(attribute='calorie_totali_stimate_sessione')|select('defined')|sum / allenamenti_utente|length)|round(1) if allenamenti_utente|length > 0 else 0 }} kcal</p>
+                <p><strong>Media durata/sessione:</strong> {{ (allenamenti_utente|map(attribute='durata_totale_allenamento_min')|select('defined')|sum / allenamenti_utente|length)|round(1) if allenamenti_utente|length > 0 else 0 }} min</p>
+            </div>
+
+            <div class="workout-list">
+                {% for allenamento in allenamenti_utente %}
+                    <div class="workout-card">
+                        <div class="workout-header">
+                            <h3>
+                                {% if allenamento.nome_allenamento %}
+                                    {{ allenamento.nome_allenamento }}
+                                {% else %}
+                                    Allenamento
+                                {% endif %}
+                            </h3>
+                            <span class="workout-date">
+                                {{ allenamento.data_allenamento.strftime('%d/%m/%Y, %H:%M') if allenamento.data_allenamento else 'Data non disponibile' }}
+                            </span>
+                        </div>
+
+                        {% if allenamento.esercizi_completati %}
+                        <ul class="exercise-list">
+                            {% for esercizio in allenamento.esercizi_completati %}
+                                <li class="exercise-item">
+                                    <strong>{{ esercizio.nome_esercizio }}</strong>
+                                    {% if esercizio.serie %}
+                                        <ul class="set-list">
+                                            {% for s in esercizio.serie %}
+                                                <li>
+                                                    Serie {{ s.n_serie }}: {{ s.ripetizioni }} rip
+                                                    {% if s.peso_kg is defined and s.peso_kg > 0 %} x {{ s.peso_kg }} kg{% endif %}
+                                                    {% if s.note %} (<em>{{ s.note }}</em>){% endif %}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% elif esercizio.distanza_km is defined or esercizio.tempo_min is defined %}
+                                        <p>
+                                            {% if esercizio.distanza_km is defined %}Distanza: {{ esercizio.distanza_km }} km{% endif %}
+                                            {% if esercizio.tempo_min is defined %}, Tempo: {{ esercizio.tempo_min }} min{% endif %}
+                                        </p>
+                                    {% endif %}
+
+                                    {% if esercizio.calorie_stimate_esercizio %}
+                                        <p class="exercise-meta">Calorie: ~{{ esercizio.calorie_stimate_esercizio }} kcal</p>
+                                    {% endif %}
+                                    {% if esercizio.tempo_dedicato_esercizio_min %}
+                                        <p class="exercise-meta">Tempo: {{ esercizio.tempo_dedicato_esercizio_min }} min</p>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+
+                        <div class="workout-meta">
+                            {% if allenamento.durata_totale_allenamento_min %}
+                            <p><strong>Durata Totale:</strong> {{ allenamento.durata_totale_allenamento_min }} min</p>
+                            {% endif %}
+                            {% if allenamento.calorie_totali_stimate_sessione %}
+                            <p><strong>Calorie Totali:</strong> ~{{ allenamento.calorie_totali_stimate_sessione }} kcal</p>
+                            {% endif %}
+                            {% if allenamento.note_generali_sessione %}
+                            <p class="workout-notes"><strong>Note:</strong> {{ allenamento.note_generali_sessione }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="no-workouts">Non hai ancora registrato nessun allenamento. <a href="{{ url_for('inserisci_allenamento') }}">Inizia ora!</a></p>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

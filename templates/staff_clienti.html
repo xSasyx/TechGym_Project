@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Gestione Clienti - Palestra Tracker{% endblock %}
+
+{% block content %}
+<div class="clients-container">
+    <h1>Gestione Clienti</h1>
+    
+    {% if clienti %}
+        <div class="clients-list">
+            <div class="list-header">
+                <span>Nome</span>
+                <span>Cognome</span>
+                <span>Email</span>
+                <span>Azioni</span>
+            </div>
+            
+            {% for cliente in clienti %}
+                <div class="client-item">
+                    <span>{{ cliente.nome }}</span>
+                    <span>{{ cliente.cognome }}</span>
+                    <span>{{ cliente.email }}</span>
+                    <div class="client-actions">
+                        <a href="{{ url_for('crea_scheda', email=cliente.email) }}" class="action-btn plan-btn">Crea Scheda</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-clients">
+            <p>Nessun cliente registrato.</p>
+        </div>
+    {% endif %}
+    
+    <div class="back-link">
+        <a href="{{ url_for('home') }}">Torna alla home staff</a>
+    </div>
+</div>
+{% endblock %}

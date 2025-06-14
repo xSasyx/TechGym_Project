@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestione Turni Staff - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <!-- Sezione per aggiungere nuovi turni -->
+    <div class="form-section">
+        <div class="form-card">
+            <h3>Aggiungi Nuovo Turno</h3>
+            <form method="POST" action="{{ url_for('gestione_turni_staff') }}">
+                <!-- Selezione membro staff -->
+                <div class="form-group">
+                    <label for="staff">Membro Staff:</label>
+                    <select id="staff" name="email_staff" required>
+                        <option value="" disabled selected>-- Seleziona Staff --</option>
+                        {% for staff in staff_list %}
+                        <option value="{{ staff.email }}">{{ staff.cognome }} {{ staff.nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Data del turno -->
+                <div class="form-group">
+                    <label for="data">Data:</label>
+                    <input type="date" id="data" name="data_turno" required>
+                </div>
+
+                <!-- Orario turno -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ora_inizio">Ora Inizio:</label>
+                        <input type="time" id="ora_inizio" name="ora_inizio" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ora_fine">Ora Fine:</label>
+                        <input type="time" id="ora_fine" name="ora_fine" required>
+                    </div>
+                </div>
+
+                <!-- Pulsante submit -->
+                <button type="submit" class="update-btn">Crea Turno</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sezione per visualizzare i turni esistenti -->
+    <div class="table-section">
+        <h2>Turni Esistenti</h2>
+        
+        {% if turni %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Staff</th>
+                        <th>Inizio</th>
+                        <th>Fine</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for turno in turni %}
+                    <tr>
+                        <td>{{ turno.data.strftime('%d/%m/%Y') }}</td>
+                        <td>{{ turno.cognome_staff }} {{ turno.nome_staff }}</td>
+                        <td>{{ turno.ora_inizio }}</td>
+                        <td>{{ turno.ora_fine }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="no-data">Nessun turno programmato.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% block title %}Home Staff - Palestra Tracker{% endblock %}
+
+{% block content %}
+<div class="container">
+  
+    <!-- Intestazione con benvenuto -->
+    <header class="welcome-header">
+        <h1>Benvenuto {{ session.nome }} (Staff)</h1>
+        
+    </header>
+    <section class="hero-section">
+        <p class="subtitle">La tua palestra di fiducia dal 2010</p>
+        <img src="/static/logo_scritta_comp.jpg" alt="Palestra Power Gym" class="hero-image">
+    </section>
+    <!-- Sezione Staff Tools -->
+    <section class="staff-tools">
+        <h2><i class="icon-tools"></i> Strumenti Staff</h2>
+        <p>Dashboard di gestione per lo staff</p>
+        <div class="tools-grid">
+            <a href="{{ url_for('staff_clienti') }}" class="tool-card">
+                <h3>Visualizza clienti</h3>
+                
+            </a>
+            <a href="{{ url_for('staff_turni') }}" class="tool-card">
+                <h3>Visualizza i turni di lavoro</h3>
+                
+            </a>
+        </div>
+    </section> 
+</div>
+  <!-- Sezione Notizie & Eventi -->
+  <section class="news-section">
+    <h2><i class="icon-news"></i> Notizie & Eventi</h2>
+    
+    {% if notizie %}
+        <div class="news-grid">
+            {% for notizia in notizie %}
+            <article class="news-card">
+                <h3>{{ notizia['titolo'] }}</h3>
+                <p>{{ notizia['descrizione'] }}</p>
+                <div class="news-footer">
+                    <span class="news-date">{{ notizia['data'] }}</span>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-news">Nessuna notizia al momento</p>
+    {% endif %}
+</section>
+    <!-- Orari Section -->
+    <section class="section">
+        <h2><i class="icon icon-clock"></i> Orari di Apertura</h2>
+        <table class="orari-table">
+            <tbody>
+                <tr>
+                    <td>Lunedì - Venerdì</td>
+                    <td>06:00 - 23:00</td>
+                </tr>
+                <tr>
+                    <td>Sabato</td>
+                    <td>08:00 - 21:00</td>
+                </tr>
+                <tr>
+                    <td>Domenica</td>
+                    <td>09:00 - 14:00</td>
+                </tr>
+                <tr class="highlight">
+                    <td>Festivi</td>
+                    <td>09:00 - 18:00</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="note">* La piscina ha orari differenti</p>
+    </section>
+
+    <!-- Eventi Section -->
+    <section class="section">
+        <h2><i class="icon icon-calendar"></i> Prossimi Eventi</h2>
+        <div class="eventi-grid">
+            <!-- Evento 1 -->
+            <div class="evento-card">
+                <img src="https://via.placeholder.com/400x300?text=Maratona" class="evento-image" alt="Maratona">
+                <div class="evento-content">
+                    <h3>Maratona Fitness</h3>
+                    <p><i class="icon icon-small icon-calendar"></i> 15 Giugno 2023</p>
+                    <p><i class="icon icon-small icon-clock"></i> 09:00 - 13:00</p>
+                    <p>12 ore di lezioni non-stop con tutti i nostri istruttori!</p>
+                </div>
+            </div>
+            
+            <!-- Evento 2 -->
+            <div class="evento-card">
+                <img src="https://via.placeholder.com/400x300?text=Workshop" class="evento-image" alt="Workshop">
+                <div class="evento-content">
+                    <h3>Workshop Nutrizione</h3>
+                    <p><i class="icon icon-small icon-calendar"></i> 22 Giugno 2023</p>
+                    <p><i class="icon icon-small icon-clock"></i> 18:30 - 20:30</p>
+                    <p>Impara a mangiare sano con il nostro nutrizionista.</p>
+                </div>
+            </div>
+            
+            <!-- Evento 3 -->
+            <div class="evento-card">
+                <img src="https://via.placeholder.com/400x300?text=Gara" class="evento-image" alt="Gara">
+                <div class="evento-content">
+                    <h3>Gara di Sollevamento</h3>
+                    <p><i class="icon icon-small icon-calendar"></i> 30 Giugno 2023</p>
+                    <p><i class="icon icon-small icon-clock"></i> 16:00 - 19:00</p>
+                    <p>Competizione amichevole con premi per i vincitori.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Servizi Section -->
+    <section class="section">
+        <h2><i class="icon icon-dumbbell"></i> I Nostri Servizi</h2>
+        <div class="servizi-grid">
+            <div class="servizio-card">
+                <i class="icon icon-big icon-pool"></i>
+                <h3>Piscina</h3>
+                <p>Piscina olimpionica riscaldata con corsi di nuoto per tutti i livelli</p>
+            </div>
+            <div class="servizio-card">
+                <i class="icon icon-big icon-dumbbell"></i>
+                <h3>Sala Pesi</h3>
+                <p>Attrezzature professionali e sempre aggiornate</p>
+            </div>
+            <div class="servizio-card">
+                <i class="icon icon-big icon-spa"></i>
+                <h3>Area Benessere</h3>
+                <p>Sauna, bagno turco e idromassaggio per il tuo relax</p>
+            </div>
+            <div class="servizio-card">
+                <i class="icon icon-big icon-child"></i>
+                <h3>Area Bambini</h3>
+                <p>Spazio dedicato ai più piccoli con animatori professionisti</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Corsi Section -->
+    <section class="section" id="corsi-container">
+        <h2><i class="icon icon-running"></i> I Nostri Corsi</h2>
+        <div class="corsi-grid">
+            <div class="corsi-column">
+                <div class="corsi-header">
+                    <h3>Corsi di Gruppo</h3>
+                </div>
+                <ul class="corsi-list">
+                    <li>
+                        <span>Zumba Fitness</span>
+                        <span class="orario">18:00-19:00</span>
+                    </li>
+                    <li>
+                        <span>Pilates</span>
+                        <span class="orario">09:00-10:00</span>
+                    </li>
+                    <li>
+                        <span>CrossFit</span>
+                        <span class="orario">19:30-20:30</span>
+                    </li>
+                    <li>
+                        <span>Yoga</span>
+                        <span class="orario">07:00-08:00</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="corsi-column">
+                <div class="corsi-header personal">
+                    <h3>Personal Training</h3>
+                </div>
+                <ul class="corsi-list">
+                    <li>Programmi personalizzati</li>
+                    <li>Preparazione atletica</li>
+                    <li>Riabilitazione post-infortunio</li>
+                    <li>Piani nutrizionali</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Promozioni Section -->
+    <section class="section promozioni">
+        <h2><i class="icon icon-percent"></i> Promozioni</h2>
+        <div class="promo-banner">
+            <h3>Offerta Estate 2023!</h3>
+            <p>Iscriviti entro il 30 giugno e ottieni <strong>3 mesi al prezzo di 2</strong></p>
+            <div class="divider"></div>
+            <p>In più, <strong>ingresso gratuito alla piscina</strong> per tutto il periodo estivo</p>
+        </div>
+    </section>
+
+    <!-- Contatti Section -->
+    <section class="section">
+        <h2><i class="icon icon-map"></i> Dove Siamo</h2>
+        <div class="contatti-grid">
+            <div class="map-container">
+                <iframe class="gym-map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215209126327!2d-73.9878446845938!3d40.74844047932881!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDQ0JzU0LjQiTiA3M8KwNTknMDkuNyJX!5e0!3m2!1sen!2sus!4v1623251234567!5m2!1sen!2sus" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+            <div class="contatti-card">
+                <h3>Contatti</h3>
+                <p><i class="icon icon-small icon-map"></i> Via Roma 123, 00100 Roma</p>
+                <p><i class="icon icon-small icon-phone"></i> 06 1234567</p>
+                <p><i class="icon icon-small icon-mail"></i> info@powergym.it</p>
+                <div class="divider"></div>
+                <h4>Social Media</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="icon icon-social icon-facebook"></i></a>
+                    <a href="#"><i class="icon icon-social icon-instagram"></i></a>
+                    <a href="#"><i class="icon icon-social icon-youtube"></i></a>
+                    <a href="#"><i class="icon icon-social icon-tiktok"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</div>
+{% endblock %}

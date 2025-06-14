@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title if title else "Le Tue Schede Allenamento" }}{% endblock %}
+
+{% block content %}
+<div class="workout-plans-container">
+    <h1>Ciao {{ session.nome }}, queste sono le tue schede di allenamento:</h1>
+
+    {% if schede %}
+        {% for scheda in schede %}
+            <div class="workout-plan">
+                <div class="plan-header">
+                    <h2>{{ scheda.titolo | default('Scheda Allenamento') }}</h2>
+                    <div class="plan-summary-header">
+                        <span><i class="fas fa-fire"></i> Calorie Stimate: <strong>~{{ scheda.calorie_totali_stimate_scheda | default('N/D') }} kcal</strong></span>
+                        <span><i class="fas fa-clock"></i> Durata Stimata: <strong>{{ scheda.durata_totale_stimata_min | default('N/D') }} min</strong></span>
+                    </div>
+                </div>
+                <div class="plan-content">
+                    {% if scheda.tipo_scheda == 'dettagliata' and scheda.esercizi %}
+                        <h3>Dettaglio Esercizi:</h3>
+                        <ul class="exercise-list">
+                            {% for esercizio in scheda.esercizi %}
+                                <li class="exercise-item">
+                                    <strong>{{ esercizio.nome_esercizio }}</strong>
+                                    {% if esercizio.descrizione_serie_target %}
+                                        <p class="exercise-detail">Target: {{ esercizio.descrizione_serie_target }}</p>
+                                    {% endif %}
+                                    {% if esercizio.tempo_min_cardio_target %}
+                                        <p class="exercise-detail">Target Cardio: {{ esercizio.tempo_min_cardio_target }} min</p>
+                                    {% endif %}
+                                    
+                                    <p class="exercise-meta">
+                                        Stima: ~{{ esercizio.calorie_stimate_esercizio | round }} kcal | {{ esercizio.tempo_stimato_esercizio_min | round }} min
+                                    </p>
+
+                                    {% if esercizio.note_esercizio %}
+                                        <p class="exercise-notes"><em>Note: {{ esercizio.note_esercizio }}</em></p>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        
+                        <div class="plan-summary-footer">
+                            {% if scheda.note_generali_scheda %}
+                                <p><strong>Note Generali Staff:</strong> {{ scheda.note_generali_scheda }}</p>
+                            {% endif %}
+                        </div>
+
+                    {% elif scheda.contenuto %}
+                        <div class="legacy-plan">
+                            <p>{{ scheda.contenuto }}</p>
+                        </div>
+                    {% else %}
+                        <p class="no-content">Contenuto della scheda non disponibile.</p>
+                    {% endif %}
+                    
+                    <div class="plan-footer">
+                        <p>Creata il: {{ scheda.data_creazione.strftime('%d %b %Y') if scheda.data_creazione else 'Data non disp.' }}
+                        {% if scheda.creata_da_staff_email %}
+                            | Da: {{ scheda.creata_da_staff_email }}
+                        {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="no-plans">
+            <p>Non hai ancora nessuna scheda di allenamento assegnata. Chiedi allo staff!</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

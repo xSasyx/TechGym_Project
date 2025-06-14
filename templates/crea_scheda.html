@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Crea Scheda Allenamento{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Crea Nuova Scheda Allenamento</h1>
+    
+    <form method="POST" action="{{ url_for('crea_scheda') }}" id="schedaForm">
+        
+        <div class="form-section">
+            <h2>1. Seleziona il Cliente</h2>
+            <label for="cliente">Scegli il cliente:</label>
+            <select id="cliente" name="email_cliente" required>
+                <option value="">-- Seleziona --</option>
+                {% for cliente in clienti %}
+                <option value="{{ cliente.email }}" {% if form_data.email_cliente == cliente.email %}selected{% endif %}>
+                    {{ cliente.cognome }} {{ cliente.nome }} ({{ cliente.email }})
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-section">
+            <h2>2. Dai un Titolo</h2>
+            <label for="titolo">Titolo della scheda:</label>
+            <input type="text" id="titolo" name="titolo_scheda" 
+                   value="{{ form_data.get('titolo_scheda', '') }}"
+                   placeholder="Es: Scheda Forza - Giorno 1" required>
+        </div>
+        
+        <hr>
+        
+        <div class="form-section">
+            <h2>3. Aggiungi Esercizi</h2>
+            <div id="eserciziContainer">
+                <div class="esercizio">
+                    <h3>Esercizio <span class="num-esercizio">1</span></h3>
+                    
+                    <label>Scegli Esercizio:</label>
+                    <select name="esercizi[0][nome]" class="exercise-select" required>
+                        <option value="">-- Seleziona un esercizio --</option>
+                        {% for category, exercises in esercizi_gym.items() %}
+                            <optgroup label="{{ category }}">
+                                {% for exercise in exercises %}
+                                    <option value="{{ exercise.nome }}">{{ exercise.nome }}</option>
+                                {% endfor %}
+                            </optgroup>
+                        {% endfor %}
+                    </select>
+
+                    <label>Serie/Ripetizioni Target:</label>
+                    <textarea name="esercizi[0][dettagli]" placeholder="Es: 3x10 (Importante per stima calorie)"></textarea>
+                    
+                    <label>Oppure, per Cardio, inserisci la durata:</label>
+                    <div class="row">
+                        <div>
+                            <label>Tempo (min):</label>
+                            <input type="number" name="esercizi[0][tempo]" placeholder="Es: 20">
+                        </div>
+                    </div>
+                    
+                    <label>Note aggiuntive:</label>
+                    <textarea name="esercizi[0][note]" placeholder="Es: Focus sulla tecnica, recupero 60 sec"></textarea>
+                    
+                    <button type="button" class="rimuovi" style="display:none;">Rimuovi Esercizio</button>
+                </div>
+            </div>
+            
+            <button type="button" id="aggiungiEsercizio">+ Aggiungi Esercizio</button>
+        </div>
+        
+        <hr>
+        
+        <div class="form-section">
+            <h2>4. Note Generali sulla Scheda</h2>
+            <textarea name="note_generali" placeholder="Es: Fare 5-10 min di riscaldamento cardio prima della sessione.">{{ form_data.get('note_generali', '') }}</textarea>
+        </div>
+        
+        <div class="actions">
+            <button type="submit" class="primary">Crea Scheda</button>
+            <button type="reset" class="secondary">Annulla</button>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let exerciseCounter = 1;
+
+    document.getElementById('aggiungiEsercizio').addEventListener('click', function() {
+        const container = document.getElementById('eserciziContainer');
+        const template = container.querySelector('.esercizio');
+        const newExercise = template.cloneNode(true);
+        
+        // Aggiorna nomi e ID
+        newExercise.querySelectorAll('[name]').forEach(el => {
+            el.name = el.name.replace(/\[\d+\]/, `[${exerciseCounter}]`);
+            if (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT' && el.type !== 'button') {
+                el.value = '';
+            }
+             if (el.tagName === 'SELECT') {
+                el.selectedIndex = 0;
+            }
+        });
+        
+        newExercise.querySelector('.num-esercizio').textContent = exerciseCounter + 1;
+        newExercise.querySelector('.rimuovi').style.display = 'inline-block';
+        
+        container.appendChild(newExercise);
+        exerciseCounter++;
+    });
+
+    document.getElementById('eserciziContainer').addEventListener('click', function(e) {
+        if (e.target.classList.contains('rimuovi')) {
+            e.target.closest('.esercizio').remove();
+            // Rinumera gli esercizi rimasti
+            document.querySelectorAll('.esercizio').forEach((esercizio, index) => {
+                esercizio.querySelector('.num-esercizio').textContent = index + 1;
+                esercizio.querySelectorAll('[name]').forEach(el => {
+                   el.name = el.name.replace(/\[\d+\]/, `[${index}]`);
+                });
+            });
+            exerciseCounter = document.querySelectorAll('.esercizio').length;
+        }
+    });
+});
+</script>
+{% endblock %}

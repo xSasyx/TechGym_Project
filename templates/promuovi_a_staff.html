@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestione Ruoli{% endblock %}
+
+{% block content %}
+<div class="roles-container">
+    <h1>Gestione Ruoli Utenti</h1>
+    
+    <!-- Sezione Promozione a Staff -->
+    <section class="promote-section">
+        <h2>Promuovi a Staff</h2>
+        <p>Seleziona un cliente per promuoverlo a Staff.</p>
+        
+        {% if clienti %}
+        <form method="POST" action="{{ url_for('promuovi_a_staff') }}">
+            <input type="hidden" name="action" value="promote">
+            <div class="form-group">
+                <label for="email_cliente">Clienti disponibili:</label>
+                <select id="email_cliente" name="email" required>
+                    <option value="" disabled selected>Seleziona un cliente</option>
+                    {% for cliente in clienti %}
+                    <option value="{{ cliente.email }}">{{ cliente.cognome }} {{ cliente.nome }} ({{ cliente.email }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="update-btn">Promuovi a Staff</button>
+        </form>
+        {% else %}
+        <div class="info-message">
+            <p>Non ci sono clienti da promuovere.</p>
+        </div>
+        {% endif %}
+    </section>
+    
+    <!-- Sezione Retrocessione a Cliente -->
+    <section class="demote-section">
+        <h2>Retrocedi a Cliente</h2>
+        <p>Seleziona un membro staff per retrocederlo a Cliente.</p>
+        
+        {% if staff_members %}
+        <form method="POST" action="{{ url_for('promuovi_a_staff') }}">
+            <input type="hidden" name="action" value="demote">
+            <div class="form-group">
+                <label for="email_staff">Membri staff disponibili:</label>
+                <select id="email_staff" name="email" required>
+                    <option value="" disabled selected>Seleziona un membro staff</option>
+                    {% for staff in staff_members %}
+                    <option value="{{ staff.email }}">{{ staff.cognome }} {{ staff.nome }} ({{ staff.email }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="update-btn">Retrocedi a Cliente</button>
+        </form>
+        {% else %}
+        <div class="info-message">
+            <p>Non ci sono membri staff da retrocedere.</p>
+        </div>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

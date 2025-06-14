@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TechGym{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    {% block head_extra %}{% endblock %}
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-container">
+            <a class="logo" href="{{ url_for('index_page') }}">TechGym</a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <nav class="main-nav" id="mainNav">
+                <ul class="nav-list">
+                    {% if session.get('email') %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('profilo') }}">Profilo</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('schede') }}">Le mie schede</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('visualizza_risultati') }}">Risultati</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('inserisci_allenamento') }}">Registra allenamento</a>
+                        </li>
+                        
+                        {% if session.get('ruolo') == 1 or session.get('ruolo') == 2 %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#">
+                                Area Staff
+                                <span class="dropdown-arrow">▼</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ url_for('staff_clienti') }}">Gestione clienti</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('crea_scheda') }}">Crea scheda cliente</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('staff_turni') }}">Turni dello staff</a></li>
+                            </ul>
+                        </li>
+                        {% endif %}
+
+                        {% if session.get('ruolo') == 2 %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#">
+                                Area Proprietario
+                                <span class="dropdown-arrow">▼</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ url_for('promuovi_a_staff') }}">Promuovi a staff</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('gestione_turni_staff') }}">Gestione turni</a></li>
+                            </ul>
+                        </li>
+                        {% endif %}
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('contatti') }}">Contatti</a>
+                        </li>
+                    {% endif %}
+                </ul>
+                
+                <ul class="auth-nav">
+                    {% if session.get('email') %}
+                        <li class="nav-item">
+                            <span class="welcome-msg">Ciao, {{ session.get('nome', 'Utente') }}!</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="logout-btn" href="{{ url_for('logout') }}">Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('signup') }}">Registrati</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                    <div class="flash-{{ category }}">
+                        {{ message }}
+                        <button class="close-flash">&times;</button>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>&copy; {% if now %}{{ now.year }}{% else %}{{ '' }}{% endif %} TechGym. Tutti i diritti riservati.</p>
+            <p><a href="{{ url_for('contatti') }}" class="footer-link">Contatti</a></p>
+        </div>
+    </footer>
+    
+    {% block scripts %}
+    <script>
+        // Menu mobile
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            document.getElementById('mainNav').classList.toggle('active');
+            this.classList.toggle('active');
+        });
+
+        // Chiudi messaggi flash
+        document.querySelectorAll('.close-flash').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.parentElement.style.display = 'none';
+            });
+        });
+
+        // Dropdown menu
+        document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                const menu = this.nextElementSibling;
+                menu.classList.toggle('show');
+                
+                // Chiudi altri dropdown aperti
+                document.querySelectorAll('.dropdown-menu').forEach(otherMenu => {
+                    if (otherMenu !== menu && otherMenu.classList.contains('show')) {
+                        otherMenu.classList.remove('show');
+                    }
+                });
+            });
+        });
+
+        // Chiudi dropdown quando si clicca fuori
+        document.addEventListener('click', function(e) {
+            if (!e.target.matches('.dropdown-toggle') && !e.target.closest('.dropdown-menu')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('show');
+                });
+            }
+        });
+    </script>
+    {% endblock %}
+</body>
+</html>

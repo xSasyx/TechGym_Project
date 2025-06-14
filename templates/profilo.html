@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Profilo Utente{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <h1>Il tuo Profilo</h1>
+    
+    <section class="profile-form">
+        <form method="POST" class="profile-edit-form">
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" name="nome" value="{{ utente['nome'] }}">
+            </div>
+            
+            <div class="form-group">
+                <label for="cognome">Cognome</label>
+                <input type="text" id="cognome" name="cognome" value="{{ utente['cognome'] }}">
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="peso">Peso (kg)</label>
+                    <input type="number" id="peso" name="peso" value="{{ utente['peso'] }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="altezza">Altezza (cm)</label>
+                    <input type="number" id="altezza" name="altezza" value="{{ utente['altezza'] }}">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="obiettivo">Obiettivo</label>
+                <input type="text" id="obiettivo" name="obiettivo" value="{{ utente['obiettivo'] }}" placeholder="Es: Aumentare massa muscolare">
+            </div>
+            
+            <button type="submit" class="update-btn">Aggiorna Profilo</button>
+        </form>
+    </section>
+</div>
+{% endblock %}
