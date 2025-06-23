@@ -49,7 +49,7 @@ Solves real problems with a single platform:
 
 ---
 
-# 🛠 Tech Stack  
+#  Tech Stack  
 **TechGym** is a full-stack web application built with:  
 - **Backend**: Python + Flask  
 - **Database**: MongoDB Atlas  
