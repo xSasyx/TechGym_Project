@@ -1,7 +1,7 @@
 # Web Technologies Project  
 University of Naples Parthenope - Academic Year 2024/2025  
 
-## 👥 Team Members  
+## Team Members  
 - Salvatore Parmendola (Mat: 0124002933)  
 - Flavio Nazzarro (Mat: 0124002946)  
 
@@ -16,7 +16,7 @@ Today, managing a gym means much more than just opening doors and waiting for cl
 
 This is exactly where **TechGym** makes the difference.  
 
-## ✔ Why It Matters  
+## Why It Matters  
 - **Enhances member experience**  
   - No more lost workout plans or schedule confusion  
   - Everything digital, accessible and organized  
@@ -29,7 +29,7 @@ This is exactly where **TechGym** makes the difference.
   - Monitor activities  
   - Data-driven decisions  
 
-## 💡 Key Benefits  
+## Key Benefits  
 Solves real problems with a single platform:  
 - **Reduces chaos**  
   - No scattered paperwork  
@@ -45,24 +45,24 @@ Solves real problems with a single platform:
 > TechGym **isn't just a technical project**, but a tool that genuinely improves gym-member interactions.  
 > Because a successful gym isn't measured just by its equipment, but by how well it makes people feel at home.  
 
-🚀 **TechGym transforms workouts into seamless experiences**  
+ **TechGym transforms workouts into seamless experiences**  
 
 ---
 
-# 🛠️ Tech Stack  
+# 🛠 Tech Stack  
 **TechGym** is a full-stack web application built with:  
 - **Backend**: Python + Flask  
 - **Database**: MongoDB Atlas  
 - **Frontend**: HTML/Jinja2 + CSS + JS  
 
-## 👥 Role System  
+##  Role System  
 | Role              | Privileges                                |
 |-------------------|------------------------------------------|
 | `Member (0)`      | View plans, log workouts                |
 | `Staff (1)`       | Create plans, manage shifts             |
 | `Owner (2)`       | Full access, role management           |
 
-## 🏋️ Core Features  
+##  Core Features  
 
 ### For Members  
 1. Log completed workouts  
@@ -89,7 +89,7 @@ Solves real problems with a single platform:
 # Web Technologies Project  
 Università degli Studi di Napoli Parthenope - AA 2024/2025  
 
-## 👥 Membri del gruppo  
+##  Membri del gruppo  
 - Salvatore Parmendola   Mat.0124002933
 - Flavio Nazzarro        Mat.0124002946  
 
@@ -104,7 +104,7 @@ Oggi, gestire una palestra significa molto più che aprire le porte e aspettare 
 
 Ed è proprio qui che **TechGym** fa la differenza.  
 
-## ✔ Perché è Importante?  
+##  Perché è Importante?  
 - **Migliora l'esperienza dei clienti**  
   - Niente più schede smarrite o confusioni sugli orari  
   - Tutto è digitale, accessibile e organizzato  
@@ -117,7 +117,7 @@ Ed è proprio qui che **TechGym** fa la differenza.
   - Monitorare le attività  
   - Decisioni basate sui dati  
 
-## 💡 Perché è Utile?  
+##  Perché è Utile?  
 Risolve problemi reali con un'unica piattaforma:  
 - **Riduce il caos**  
   - Niente fogli sparsi  
@@ -133,24 +133,24 @@ Risolve problemi reali con un'unica piattaforma:
 > TechGym **non è solo un progetto tecnico**, ma uno strumento che migliora concretamente l'interazione tra palestre e clienti.  
 > Perché una palestra di successo si misura da quanto riesce a far sentire le persone al posto giusto.  
 
-🚀 **TechGym è qui per trasformare l'allenamento in un'esperienza senza intoppi**  
+ **TechGym è qui per trasformare l'allenamento in un'esperienza senza intoppi**  
 
 ---
 
-# 🛠️ Tool e Tecnologie  
+#  Tool e Tecnologie  
 **TechGym** è un'applicazione web full-stack sviluppata con:  
 - **Backend**: Python + Flask  
 - **Database**: MongoDB Atlas  
 - **Frontend**: HTML/Jinja2 + CSS + JS  
 
-## 👥 Sistema di Ruoli  
+##  Sistema di Ruoli  
 | Ruolo              | Privilegi                                  |
 |--------------------|--------------------------------------------|
 | `Cliente (0)`      | Visualizza schede, registra allenamenti    |
 | `Staff (1)`        | Crea schede, gestisce turni                |
 | `Proprietario (2)` | Gestione ruoli, accesso completo           |
 
-## 🏋️ Funzionalità Principali  
+##  Funzionalità Principali  
 
 ### Per Utenti  
 1. Inserire allenamenti effettuati  
