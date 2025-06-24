@@ -1,22 +1,20 @@
 # app.py
 
 # ==============================================================================
-# 1. IMPORTAZIONI: Carichiamo tutti gli tool che ci servono
+# 1. importazione fondamentali 
 # ==============================================================================
-import re
-from flask import (
-    Flask, render_template, request, redirect, url_for, session, flash
-)
-from pymongo import MongoClient, DESCENDING
-from pymongo.errors import ConnectionFailure
-from werkzeug.security import generate_password_hash, check_password_hash
-from functools import wraps
-from datetime import datetime
-from bson import ObjectId
+import re                                                                                   
+from flask import (Flask, render_template, request, redirect, url_for, session, flash)                                                                                               
+from pymongo import MongoClient, DESCENDING                                                     
+from pymongo.errors import ConnectionFailure                                                    
+from werkzeug.security import generate_password_hash, check_password_hash                                       
+from functools import wraps                                                                                         
+from datetime import datetime                                                               
+from bson import ObjectId                                                                       
 
 
 # ==============================================================================
-# 2. CONFIGURAZIONE INIZIALE DELL'APPLICAZIONE
+# config dell'applicazione 
 # ==============================================================================
 app = Flask(__name__)
 app.secret_key = 'test'
@@ -27,7 +25,7 @@ RUOLO_STAFF = 1
 RUOLO_PROPRIETARIO = 2
 
 # ==============================================================================
-# 2.1 ELENCO ESERCIZI E FUNZIONI DI CALCOLO
+#  lista esercizi e funzioni per il calcolo 
 # ==============================================================================
 
 def get_elenco_esercizi():
@@ -123,7 +121,7 @@ def get_elenco_esercizi():
             {"nome": "Side Plank", "met": 3.0}
         ]
     }
-    # Creiamo una lista piatta per la ricerca veloce
+    
     flat_list = []
     for category in esercizi.values():
         flat_list.extend(category)
@@ -136,9 +134,14 @@ def get_met_by_name(nome_esercizio):
     for ex in ESERCIZI_FLAT_LIST:
         if ex['nome'] == nome_esercizio:
             return ex['met']
-    return 3.0  # Valore di default se non trovato
+    return 3.0  # Valore di default 
 
 def stima_calorie(nome_esercizio, peso_kg, serie_target_str=None, tempo_min=None):
+    try:
+        peso_kg = float(peso_kg)
+    except (ValueError, TypeError):
+        peso_kg = 75.0
+
     """
     Stima le calorie bruciate per un esercizio.
     Formula: (MET * peso_corporeo_kg * 3.5) / 200 * minuti
@@ -152,7 +155,7 @@ def stima_calorie(nome_esercizio, peso_kg, serie_target_str=None, tempo_min=None
     elif serie_target_str:
         # Altrimenti, per esercizi di forza, stimiamo la durata dalle serie
         # Es: "3x10", "4x8-12", "5x5". Estraiamo il primo numero.
-        match = re.match(r'(\d+)', serie_target_str)
+        match = re.match(r'(\d+)', serie_target_str)  #pattern :'(\d+)' per cercare uno o piu cifre da 0 a 9 
         if match:
             num_serie = int(match.group(1))
             # Assumiamo circa 1.5 minuti per serie (inclusa pausa)
@@ -166,7 +169,7 @@ def stima_calorie(nome_esercizio, peso_kg, serie_target_str=None, tempo_min=None
 
 
 # ==============================================================================
-# 3. DECORATORI 
+# 3. decorators
 # ==============================================================================
 def staff_required(f):
     @wraps(f)
@@ -202,7 +205,7 @@ def login_required(f):
 
 
 # ==============================================================================
-# 4. CONNESSIONE AL DATABASE MONGODB 
+# connessione al mongdb 
 # ==============================================================================
 MONGODB_URI = "mongodb+srv://TechGym:aNv8T4qf3zSdTkBr@gym.06rhp1p.mongodb.net/?retryWrites=true&w=majority&appName=Gym"
 try:
@@ -224,7 +227,7 @@ except Exception as e:
 
 
 # ==============================================================================
-# 5. FUNZIONI UTILI
+# 5. funzioni utili
 # ==============================================================================
 @app.context_processor
 def inject_now():
@@ -244,7 +247,7 @@ def month_name(month_num):
 
 
 # ==============================================================================
-# 6. ROUTES: Le Pagine della applicazione Web
+# routes
 # ==============================================================================
 
 # --- Route Principali e Autenticazione 
@@ -422,7 +425,7 @@ def crea_scheda():
 
     if request.method == 'POST':
         try:
-            # 1. Recupera dati generali scheda
+            #  Recupera dati generali scheda
             email_cliente = request.form.get('email_cliente')
             titolo_scheda = request.form.get('titolo_scheda')
             note_generali = request.form.get('note_generali')
@@ -431,7 +434,7 @@ def crea_scheda():
                 flash('Email cliente e titolo scheda sono obbligatori.', 'warning')
                 return redirect(url_for('crea_scheda'))
 
-            # 2. Recupera il peso del cliente per il calcolo calorie
+            #  Recupera il peso del cliente per il calcolo calorie
             dati_cliente = dati_profile_collection.find_one({'email': email_cliente})
             peso_cliente = dati_cliente.get('peso', 75.0) # Default a 75kg se non specificato
 
@@ -439,7 +442,7 @@ def crea_scheda():
             calorie_totali_stimate = 0
             durata_totale_stimata = 0
             
-            # 3. Cicla attraverso gli esercizi inviati dal form
+            #  Cicla attraverso gli esercizi inviati dal form
             i = 0
             while f'esercizi[{i}][nome]' in request.form:
                 nome_ex = request.form.get(f'esercizi[{i}][nome]')
@@ -451,7 +454,7 @@ def crea_scheda():
                     i += 1
                     continue
                 
-                # 4. Calcola calorie e durata stimate per l'esercizio
+                #  Calcola calorie e durata stimate per l'esercizio
                 calorie_stimate, durata_stimata = stima_calorie(
                     nome_ex, peso_cliente, dettagli_ex, tempo_cardio_min
                 )
@@ -474,7 +477,7 @@ def crea_scheda():
                 flash("Aggiungi almeno un esercizio alla scheda.", "warning")
                 return redirect(url_for('crea_scheda'))
 
-            # 5. Costruisce e salva l'oggetto scheda nel DB
+            #  Costruisce e salva l'oggetto scheda nel DB
             nuova_scheda = {
                 'email': email_cliente,
                 'titolo': titolo_scheda,
@@ -502,7 +505,6 @@ def crea_scheda():
 
 # --- Route per l'inserimento di un allenamento  ---
 
-# Dentro la route inserisci_allenamento()
 @app.route('/inserisci_allenamento', methods=['GET', 'POST'])
 @login_required
 def inserisci_allenamento():
@@ -640,33 +642,6 @@ def inserisci_allenamento():
                            esercizi_gym=ESERCIZI_CATEGORIZZATI,
                            form_data={})
 
-
-# la funzione stima_calorie
-def stima_calorie(nome_esercizio, peso_kg, serie_target_str=None, tempo_min=None):
-    try:
-        peso_kg = float(peso_kg)
-    except (ValueError, TypeError):
-        peso_kg = 75.0
-
-    met = get_met_by_name(nome_esercizio)
-    durata_min_stimata = 0
-
-    if tempo_min and tempo_min > 0:
-        durata_min_stimata = tempo_min
-    elif serie_target_str:
-        match = re.match(r'(\d+)', serie_target_str)
-        if match:
-            num_serie = int(match.group(1))
-            durata_min_stimata = num_serie * 1.5
-
-    if durata_min_stimata > 0:
-        calorie = (met * peso_kg * 3.5) / 200 * durata_min_stimata
-        return round(calorie), round(durata_min_stimata)
-
-    return 0, 0
-
-
-# --- Altre routes ---
 
 @app.route('/risultati')
 @login_required
@@ -819,7 +794,7 @@ def staff_turni():
     return render_template('staff_turni.html', turni=turni)
 
 # ==============================================================================
-# 7. GESTIONE DEGLI ERRORI HTTP 
+#   gestione errori http
 # ==============================================================================
 @app.errorhandler(404)
 def page_not_found(e):
@@ -838,7 +813,7 @@ def handle_db_connection_error(e):
 
 
 # ==============================================================================
-# 8. ESECUZIONE DELL'APPLICAZIONE (Invariato)
+#  esecuzione dell'app
 # ==============================================================================
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
