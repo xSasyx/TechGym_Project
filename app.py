@@ -1,7 +1,7 @@
 # app.py
 
 # ==============================================================================
-# 1. importazione fondamentali 
+#  importazione fondamentali 
 # ==============================================================================
 import re                                                                                   
 from flask import (Flask, render_template, request, redirect, url_for, session, flash)                                                                                               
@@ -169,7 +169,7 @@ def stima_calorie(nome_esercizio, peso_kg, serie_target_str=None, tempo_min=None
 
 
 # ==============================================================================
-# 3. decorators
+#  decorators
 # ==============================================================================
 def staff_required(f):
     @wraps(f)
@@ -227,7 +227,7 @@ except Exception as e:
 
 
 # ==============================================================================
-# 5. funzioni utili
+#  funzioni utili
 # ==============================================================================
 @app.context_processor
 def inject_now():
