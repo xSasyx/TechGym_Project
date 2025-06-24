@@ -1,16 +1,16 @@
 # app.py
 
 # ==============================================================================
-#  importazione fondamentali 
+# importazione fondamentali 
 # ==============================================================================
-import re                                                                                   
-from flask import (Flask, render_template, request, redirect, url_for, session, flash)                                                                                               
-from pymongo import MongoClient, DESCENDING                                                     
-from pymongo.errors import ConnectionFailure                                                    
-from werkzeug.security import generate_password_hash, check_password_hash                                       
-from functools import wraps                                                                                         
-from datetime import datetime                                                               
-from bson import ObjectId                                                                       
+import re       #libreria per l'espressioni regolari quindi per manipolazione di stringhe ecc...                                           
+from flask import (Flask, render_template, request, redirect, url_for, session, flash)   #libreria per web application con aggiunte                                                                                             
+from pymongo import MongoClient, DESCENDING         #libreria per la connesione al db                                            
+from pymongo.errors import ConnectionFailure         # libreria per la gestion errori db                                   
+from werkzeug.security import generate_password_hash, check_password_hash    #serve per sicurezza cripta la password e la decripta                                   
+from functools import wraps          #libreria per il funzionamento dei decoratori                                                                    
+from datetime import datetime             #libreria gestione data e ora                                                   
+from bson import ObjectId               #libreria per la letture degli id nel mongo db                                                         
 
 
 # ==============================================================================
@@ -169,7 +169,7 @@ def stima_calorie(nome_esercizio, peso_kg, serie_target_str=None, tempo_min=None
 
 
 # ==============================================================================
-#  decorators
+# decorators
 # ==============================================================================
 def staff_required(f):
     @wraps(f)
@@ -227,7 +227,7 @@ except Exception as e:
 
 
 # ==============================================================================
-#  funzioni utili
+# funzioni utili
 # ==============================================================================
 @app.context_processor
 def inject_now():
