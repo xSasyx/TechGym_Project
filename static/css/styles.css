@@ -453,39 +453,117 @@ tr:hover {
    7. STILI SPECIFICI PER LE PAGINE
    ========================================================================== */
 
-/* --- Pagina Login / Registrazione --- */
-.auth-container {
-    flex: 1; 
+/* ==========================================================================
+   STILI PAGINA LOGIN - RE-DESIGN MODERNO
+   ========================================================================== */
+
+.login-container {
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 2rem 1rem;
+    background: radial-gradient(circle at center, #1b263b 0%, #0d131f 100%);
+    padding: 20px;
 }
-.auth-card {
-    background-color: var(--surface-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    padding: 2rem;
+
+.login-card {
+    background: rgba(44, 62, 80, 0.7); /* Vetro opaco */
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
     width: 100%;
-    max-width: 400px;
-    border: 1px solid var(--border-color);
-}
-.auth-card h2 {
+    max-width: 450px;
+    border: 1px solid rgba(52, 152, 219, 0.3);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
     text-align: center;
-    margin-bottom: 1.5rem;
 }
-.auth-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+
+.login-card h2 {
+    color: #ffffff;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
-.auth-link {
-    text-align: center;
-    margin-top: 1.5rem;
+
+/* Effetto bordi luminosi per gli input */
+.login-form .form-group {
+    margin-bottom: 25px;
+    text-align: left;
 }
-.auth-link a {
-    color: var(--primary-color);
+
+.login-form label {
+    color: #3498db; /* Blu primario */
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 14px 20px;
+    background: rgba(27, 38, 59, 0.8);
+    border: 2px solid #415a77;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
+}
+
+/* Bottone di accesso con i colori del logo (Giallo-Verde) */
+.login-btn {
+    width: 100%;
+    padding: 16px;
+    background: #adff2f; /* Colore fluo simile al logo */
+    border: none;
+    border-radius: 12px;
+    color: #0d131f;
+    font-size: 1.1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    box-shadow: 0 5px 15px rgba(173, 255, 47, 0.3);
+}
+
+.login-btn:hover {
+    background: #98e629;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(173, 255, 47, 0.5);
+}
+
+.login-links {
+    margin-top: 25px;
+    color: #bdc3c7;
+    font-size: 0.9rem;
+}
+
+.login-links a {
+    color: #3498db;
     font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.login-links a:hover {
+    color: #adff2f; /* Cambio al verde fluo on hover */
+}
+
+/* Messaggi flash dentro la card */
+.login-card .flash-messages {
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    padding: 12px;
 }
 
 /* --- Pagina Profilo Utente --- */
@@ -2028,4 +2106,5 @@ body {
     .section {
         padding: 15px;
     }
+
 }
