@@ -90,7 +90,7 @@ Università degli Studi di Napoli Parthenope - AA 2024/2025
 
 ##  Membri del gruppo  
 - Salvatore Parmendola   Mat.0124002933
-- Flavio Nazzarro        Mat.0124002946  
+
 
 # TechGym - Applicazione Web per Gestione Palestra  
 
